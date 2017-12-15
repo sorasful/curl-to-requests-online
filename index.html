@@ -42,7 +42,7 @@
                     verb = r_verb[0].replace('-X ', '').lower()
 
                 address_display = "'{0}', ".format(address if not None else "")
-                output = "requests.{0}(url={1} {2} {3})".format(verb, address_display, datas if datas else "", headers_display if headers else "")
+                output = "requests.{0}(url={1} {2} {3})".format(verb, address_display+"\n", datas+"\n" if datas else "", headers_display+"\n" if headers else "")
 
                 document['result'].text = output
 
