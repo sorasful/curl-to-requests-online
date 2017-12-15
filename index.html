@@ -1,24 +1,8 @@
 <html>
-
 <head>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
-          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-    <script type="text/javascript"
-            src="https://cdn.rawgit.com/brython-dev/brython/stable/www/src/brython.js">
-    </script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
-            integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
-            crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
-            integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
-            crossorigin="anonymous"></script>
-
-    <link rel="stylesheet" href="style.css">
+    <title>Curl to requests online</title>
+    <link rel="stylesheet" href="resources/bootstrap.min.css">
 </head>
-
 <body onload="brython()">
 
 <script type="text/python">
@@ -62,29 +46,31 @@
 
                 document['result'].text = output
 
-
-
             document['validate'].bind('click', convert_curl_to_requests)
-
-
-
-
 
 
 </script>
 
-<h1>Curl to requests</h1>
-<p>Curls requests presentation ....</p>
+<div class="container">
+    <h1>Curl to requests online</h1>
+    <p>This tool has the same purpose as the CLI version but provides a web interface. Just copy and paste
+    your curl command and click Validate button to get the transformation done. </p>
 
-<br>
-
-
-<label for="zone">curl command: </label><input id="zone"><br>
-<button id="validate">Validate</button>
+    <br>
 
 
-<p id="result"></p>
+    <label for="zone">curl command: </label><input class="form-control" id="zone"><br>
+    <button id="validate">Validate</button><br><br>
 
+    <div class="col-md-12">
+        <div class="well"><textarea class="form-control" rows="10" id="result"></textarea></div>
+    </div>
+
+</div>
+
+<script src="resources/bootstrap.min.js"></script>
+<script src="resources/brython.js"></script>
+<script src="resources/brython_stdlib.js"></script>
 
 </body>
 
