@@ -1,0 +1,91 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"
+          integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+    <script type="text/javascript"
+            src="https://cdn.rawgit.com/brython-dev/brython/stable/www/src/brython.js">
+    </script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js"
+            integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js"
+            integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ"
+            crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body onload="brython()">
+
+<script type="text/python">
+            from browser import document, alert, timer
+
+            import re
+
+            REGEX_ADDRESS = r"curl '[\w:\/\.0;9-]+'|-X ?POST\s?'?\s?[\w:\/]+'?"
+            REGEX_HEADERS = r"""(-H ?(?:'|")[\w\s\\\/\.,;:\-\+=()\*]+)"""
+            REGEX_DATAS = r"""(-d|--data)( ?'[\w\s{":\.,}]+')"""
+            REGEX_VERB = r"""-X [\w]+"""
+
+            def convert_curl_to_requests():
+                command = document['zone'].value
+                address = ""
+                verb = "get" # By default when you don't precise to curl we use get
+                datas = ""
+                headers = ""
+
+                r_address = re.findall(REGEX_ADDRESS, command)
+                if r_address:
+                    address = r_address[0].split(' ')[-1].strip("'")
+
+
+                r_headers = re.findall(REGEX_HEADERS, command)
+                if r_headers:
+                    headers_k_v = [header.split(': ') for header in r_headers]
+                    headers = {key.replace('-H ', '').replace('"', '').replace("'", ''): value.replace('"', '').replace("'", '') for key, value in  headers_k_v}
+                    headers_display = "headers={0}, ".format(headers)
+
+                r_datas = [x[1] for x in re.findall(REGEX_DATAS, command)]
+                if r_datas:
+                    datas = "data={0}, ".format(r_datas[0].replace("'", ''))
+
+                r_verb = re.findall(REGEX_VERB, command)
+                if r_verb:
+                    verb = r_verb[0].replace('-X ', '').lower()
+
+                address_display = "'{0}', ".format(address if not None else "")
+                output = "requests.{0}(url={1} {2} {3})".format(verb, address_display, datas if datas else "", headers_display if headers else "")
+
+                document['result'].text = output
+
+
+
+            document['validate'].bind('click', convert_curl_to_requests)
+
+
+
+
+
+
+</script>
+
+<h1>Curl to requests</h1>
+<p>Curls requests presentation ....</p>
+
+<br>
+
+
+<label for="zone">curl command: </label><input id="zone"><br>
+<button id="validate">Validate</button>
+
+
+<p id="result"></p>
+
+
+</body>
+
+</html>
